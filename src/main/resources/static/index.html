@@ -69,13 +69,9 @@
                 <form class="inline-form">
                     <label style="font-size: 2em;"> Current blueprint: </label><label id="blueprint_name" style="font-size: 2em;"></label>
                 </form>
-                <div>
-                    <canvas id="myCanvas" width="500px" height="300px" style="border:2px solid #000000"></canvas>
-                    <form class="inline-form">
-                        <label style="font-size: 2em;"> Total clicks: </label><label id="totalClicks" style="font-size: 2em;"></label>
-                    </form>
-                    <div onclick="totalClicks()"><span id="clicks"></span></div>
-                </div>
+                    <body onLoad = "clicks()">
+                        <canvas id="myCanvas" width="500px" height="300px" style="border:2px solid #000000"></canvas>
+                    </body>
             </div>
         </div>
     </div>
