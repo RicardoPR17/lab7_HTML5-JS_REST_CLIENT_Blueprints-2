@@ -76,46 +76,12 @@ var Module = (function () {
         api.getBlueprintsByNameAndAuthor(author, bpname, drawBlueprint);
     }
 
-
-    function clicks() {
-
-        // Obtener el elemento canvas y su contexto
-        const canvas = document.getElementById("myCanvas");
-        const ctx = canvas.getContext("2d");
-        let puntos = [];
-        // Evento cuando se presiona el botón del mouse
-        canvas.addEventListener("mousedown", (e) => {
-            const x = e.clientX - canvas.getBoundingClientRect().left;
-            const y = e.clientY - canvas.getBoundingClientRect().top;
-            puntos.push({ x, y });
-        });
-        // Evento cuando se mueve el mouse
-        canvas.addEventListener("mousemove", (e) => {
-            if (e.buttons !== 1) return; // Verificar si el botón izquierdo del mouse está presionado
-            const x = e.clientX - canvas.getBoundingClientRect().left;
-            const y = e.clientY - canvas.getBoundingClientRect().top;
-            puntos.push({ x, y });
-            dibujarPuntos();
-        });
-
-        function dibujarPuntos() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.beginPath();
-            ctx.strokeStyle = "black";
-            ctx.lineWidth = 2;
-            for (let i = 0; i < puntos.length; i++) {
-                ctx.lineTo(puntos[i].x, puntos[i].y);
-                ctx.stroke();
-            }
-        }
-    }
-
     // Public method that allows updating a private variable
     return {
         changeName: changeName,
         setList: setList,
         getBlueprint: getBlueprint,
-        clicks: clicks
+        //clicks: clicks
     }
 
 })();
