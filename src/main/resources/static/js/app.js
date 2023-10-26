@@ -120,11 +120,22 @@ var Module = (function () {
     }
   }
 
+  // Functions for update a blueprint
+  function update() {
+    return $.ajax({
+      url: "/blueprints/" + auth + "/" + bp,
+      type: "PUT",
+      data: JSON.stringify({ author: auth, points: puntos, name: bp }),
+      contentType: "application/json",
+    }).then(alert("Blueprint updated"));
+  }
+
   // Public method that allows updating a private variable
   return {
     changeName: changeName,
     setList: setList,
     getBlueprint: getBlueprint,
     clicks: clicks,
+    update: update,
   };
 })();

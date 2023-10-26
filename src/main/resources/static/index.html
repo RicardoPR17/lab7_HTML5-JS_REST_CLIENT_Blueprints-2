@@ -1,81 +1,106 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <title>Blueprints</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <script src="/webjars/jquery/jquery.min.js"></script>
     <script src="/webjars/bootstrap/5.3.2/js/bootstrap.min.js"></script>
     <script src="js/apimock.js"></script>
     <script src="js/apiclient.js"></script>
     <script src="js/app.js"></script>
-    <link rel="stylesheet" href="/webjars/bootstrap/5.3.2/css/bootstrap.min.css" />
-</head>
+    <link
+      rel="stylesheet"
+      href="/webjars/bootstrap/5.3.2/css/bootstrap.min.css"
+    />
+  </head>
 
-<style>
+  <style>
     body {
-        display: flex;
-        background-color: #e6faff;
-        font-family: 'Times New Roman', Times, serif;
+      display: flex;
+      background-color: #e6faff;
+      font-family: "Times New Roman", Times, serif;
     }
 
     h2 {
-        font-size: 24px;
+      font-size: 24px;
     }
 
     table {
-        border-collapse: collapse;
-        text-align: center;
-        width: 90%;
+      border-collapse: collapse;
+      text-align: center;
+      width: 90%;
     }
-
-
 
     #myCanvas {
-        border: 2px solid #cce6ff;
+      border: 2px solid #cce6ff;
     }
-</style>
 
-<body onLoad = "Module.clicks()">
-    <div style="margin:0px 10px 0px 10px">
-        <div>
-            <h1>Blueprints</h1>
-            <form class="inline-form">
-                <label>Author <input type="text" id="author" name="author" /></label>
-                <button type="button" class="btn btn-primary"
-                    onclick="Module.setList(document.getElementById('author').value)">Get blueprints</button>
-            </form>
+    .update {
+        align-items: left;
+        margin: 50px auto auto 100px;
+    }
+  </style>
+
+  <body onLoad="Module.clicks()">
+    <div style="margin: 0px 10px 0px 10px">
+      <div>
+        <h1>Blueprints</h1>
+        <form class="inline-form">
+          <label>Author <input type="text" id="author" name="author" /></label>
+          <button
+            type="button"
+            class="btn btn-primary"
+            onclick="Module.setList(document.getElementById('author').value)"
+          >
+            Get blueprints
+          </button>
+        </form>
+      </div>
+
+      <div class="row gx-5 justify-content-around">
+        <div class="col-sm-4">
+          <h2 id="author2"></h2>
+          <table
+            id="blueprints"
+            class="table-info table table-bordered border-primary"
+          >
+            <tr>
+              <th>Blueprint name</th>
+              <th>Number of points</th>
+              <th>Open blueprint</th>
+            </tr>
+          </table>
+          <form class="inline-form">
+            <label style="font-size: 2em"> Total user points: </label
+            ><label id="totalPoints" style="font-size: 2em"></label>
+          </form>
         </div>
+        <div class="col-sm-4">
+          <form class="inline-form">
+            <label style="font-size: 2em"> Current blueprint: </label
+            ><label id="blueprint_name" style="font-size: 2em"></label>
+          </form>
 
-        <div class="row gx-5 justify-content-around">
-            <div class="col-sm-4">
-                <h2 id="author2"></h2>
-                <table id="blueprints" class="table-info table table-bordered border-primary">
-                    <tr>
-                        <th>Blueprint name</th>
-                        <th>Number of points</th>
-                        <th>Open blueprint</th>
-                    </tr>
-                </table>
-                <form class="inline-form">
-                    <label style="font-size: 2em;"> Total user points: </label><label id="totalPoints" style="font-size: 2em;"></label>
-                </form>
+          <canvas
+            id="myCanvas"
+            width="500px"
+            height="300px"
+            style="border: 2px solid #000000"
+          ></canvas>
 
-
-            </div>
-            <div class="col-sm-4">
-                <form class="inline-form">
-                    <label style="font-size: 2em;"> Current blueprint: </label><label id="blueprint_name" style="font-size: 2em;"></label>
-                </form>
-
-
-                        <canvas id="myCanvas" width="500px" height="300px" style="border:2px solid #000000"></canvas>
-
-            </div>
+          <div class="update">
+            <button
+              type="button"
+              class="btn btn-success"
+              onclick="Module.update()"
+            >
+              Save/Update
+            </button>
+          </div>
         </div>
+      </div>
     </div>
-</body>
-
+  </body>
 </html>
