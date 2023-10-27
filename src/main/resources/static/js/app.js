@@ -140,7 +140,10 @@ var Module = (function () {
             type: "PUT",
             data: JSON.stringify({ author: auth, points: puntos, name: bp }),
             contentType: "application/json",
-        }).then(alert("Blueprint updated"));
+        }).then(func = () => {
+            alert("Blueprint updated");
+            setList(auth);  // blueprint's list updated
+        });
     }
   }
 
