@@ -154,6 +154,27 @@ var Module = (function () {
     }
   }
 
+  // Function for delete a  blueprint
+   function deleteBlueprint(){
+        return $.ajax({
+            url: "/blueprints/" + auth + "/" + bp,
+            type: "DELETE",
+            // data: JSON.stringify({ author: auth, points: puntos, name: bp }),
+            contentType: "application/json",
+            }).then(function() {
+
+                alert("Blueprint delete");
+                return setList(author);
+        });
+   }
+
+   function deleteOfCanvas(){
+        var canvas = document.getElementById("myCanvas"), ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.beginPath();
+        deleteBlueprint();
+   }
+
   // Public method that allows updating a private variable
   return {
     changeName: changeName,
@@ -161,6 +182,8 @@ var Module = (function () {
     getBlueprint: getBlueprint,
     clicks: clicks,
     update: update,
-    create: create
+    create: create,
+    deleteOfCanvas:deleteOfCanvas,
+    deleteBlueprint: deleteBlueprint
   };
 })();
