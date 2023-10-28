@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Blueprints</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/5.3.2/js/bootstrap.min.js"></script>
+    <script src="js/apimock.js"></script>
+    <script src="js/apiclient.js"></script>
+    <script src="js/app.js"></script>
+    <link rel="stylesheet" href="/webjars/bootstrap/5.3.2/css/bootstrap.min.css" />
+</head>
+
+<style>
+    body {
+        display: flex;
+        background-color: #e6faff;
+        font-family: 'Times New Roman', Times, serif;
+    }
+
+    h2 {
+        font-size: 24px;
+    }
+
+    table {
+        border-collapse: collapse;
+        text-align: center;
+        width: 90%;
+    }
+
+
+
+    #myCanvas {
+        border: 2px solid #cce6ff;
+    }
+</style>
+
+<body>
+    <div style="margin:0px 10px 0px 10px">
+        <div>
+            <h1>Blueprints</h1>
+            <form class="inline-form">
+                <label>Author <input type="text" id="author" name="author" /></label>
+                <button type="button" class="btn btn-primary"
+                    onclick="Module.setList(document.getElementById('author').value)">Get blueprints</button>
+            </form>
+        </div>
+
+        <div class="row gx-5 justify-content-around">
+            <div class="col-sm-4">
+                <h2 id="author2"></h2>
+                <table id="blueprints" class="table-info table table-bordered border-primary">
+                    <tr>
+                        <th>Blueprint name</th>
+                        <th>Number of points</th>
+                        <th>Open blueprint</th>
+                    </tr>
+                </table>
+                <form class="inline-form">
+                    <label style="font-size: 2em;"> Total user points: </label><label id="totalPoints" style="font-size: 2em;"></label>
+                </form>
+
+
+            </div>
+            <div class="col-sm-4">
+                <form class="inline-form">
+                    <label style="font-size: 2em;"> Current blueprint: </label><label id="blueprint_name" style="font-size: 2em;"></label>
+                </form>
+                    <script>
+                        function clicks() {
+
+                            // Obtener el elemento canvas y su contexto
+                            const canvas = document.getElementById("myCanvas");
+                            const ctx = canvas.getContext("2d");
+                            let puntos = [];
+                            // Evento cuando se presiona el botón del mouse
+                            canvas.addEventListener("mousedown", (e) => {
+                                const x = e.clientX - canvas.getBoundingClientRect().left;
+                                const y = e.clientY - canvas.getBoundingClientRect().top;
+                                puntos.push({ x, y });
+                            });
+                            // Evento cuando se mueve el mouse
+                            canvas.addEventListener("mousemove", (e) => {
+                                if (e.buttons !== 1) return; // Verificar si el botón izquierdo del mouse está presionado
+                                const x = e.clientX - canvas.getBoundingClientRect().left;
+                                const y = e.clientY - canvas.getBoundingClientRect().top;
+                                puntos.push({ x, y });
+                                dibujarPuntos();
+                            });
+
+                            function dibujarPuntos() {
+                                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                                ctx.beginPath();
+                                ctx.strokeStyle = "black";
+                                ctx.lineWidth = 2;
+                                for (let i = 0; i < puntos.length; i++) {
+                                    ctx.lineTo(puntos[i].x, puntos[i].y);
+                                    ctx.stroke();
+                                }
+                            }
+                        }
+                    </script>
+                    <body onLoad = "clicks()">
+                        <canvas id="myCanvas" width="500px" height="300px" style="border:2px solid #000000"></canvas>
+                    </body>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
