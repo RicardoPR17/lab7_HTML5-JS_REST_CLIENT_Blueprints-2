@@ -99,4 +99,14 @@ public class BlueprintAPIController {
         }
 
     }
+
+    @DeleteMapping(value = "/{author}/{bpname}")
+    public  ResponseEntity<?> deleteBlueprint(@PathVariable String author, @PathVariable String bpname){
+        try{
+            blueprintServices.deleteBlueprint(author, bpname);
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        }catch (Exception ex){
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
 }

@@ -55,4 +55,6 @@ public interface BlueprintsPersistence {
 
     public void deleteBlueprints();
 
+    public  void deleteBlueprint(String author, String bpname);
+
 }

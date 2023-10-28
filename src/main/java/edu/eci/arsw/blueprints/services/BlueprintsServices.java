@@ -114,4 +114,8 @@ public class BlueprintsServices {
         setAuthorBlueprint(bp, blueprint.getAuthor());
         setPointsBlueprint(bp, blueprint.getPoints());
     }
+
+    public void deleteBlueprint(String name, String bpname){
+        bpp.deleteBlueprint(name,bpname);
+    }
 }
