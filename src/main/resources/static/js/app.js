@@ -12,12 +12,19 @@ var Module = (function () {
   // Private method to access private variable
   function changeName() {
     author = document.getElementById("author").value;
+    auth = author;
+    puntos = [];
     $("#author2").text(author + "'s blueprints: ");
   }
 
   var fun = function (list) {
-    if (!Array.isArray(list)) {
-      list = JSON.parse(list);
+    try {
+      if (!Array.isArray(list)) {
+        list = JSON.parse(list);
+      }
+    } catch (err) {
+      $("#blueprints").find("td").remove();
+      return;
     }
 
     console.info(list);
@@ -51,6 +58,7 @@ var Module = (function () {
 
   function setList(author) {
     changeName();
+    deleteData();
     api.getBlueprintsByAuthor(author, fun);
   }
 
@@ -83,7 +91,6 @@ var Module = (function () {
 
   function getBlueprint(author, bpname) {
     $("#blueprint_name").text(bpname);
-    auth = author;
     bp = bpname;
     puntos = [];
     api.getBlueprintsByNameAndAuthor(author, bpname, drawBlueprint);
@@ -124,56 +131,74 @@ var Module = (function () {
   // Functions for update a blueprint
   function update() {
     if (firstTime) {
-        firstTime = false;
-        return $.ajax({
-              url: "/blueprints",
-              type: "POST",
-              data: JSON.stringify({ author: document.getElementById("author").value, points: [], name: bp }),
-              contentType: "application/json",
-        }).then(function() {
-            alert("Blueprint created and updated");
-            return setList(author);
-        });
+      firstTime = false;
+      return $.ajax({
+        url: "/blueprints",
+        type: "POST",
+        data: JSON.stringify({ author: document.getElementById("author").value, points: [], name: bp }),
+        contentType: "application/json",
+      }).then(function () {
+        alert("Blueprint created and updated");
+        return setList(author);
+      });
     } else {
-        return $.ajax({
-            url: "/blueprints/" + auth + "/" + bp,
-            type: "PUT",
-            data: JSON.stringify({ author: auth, points: puntos, name: bp }),
-            contentType: "application/json",
-        }).then(alert("Blueprint updated"));
+      return $.ajax({
+        url: "/blueprints/" + auth + "/" + bp,
+        type: "PUT",
+        data: JSON.stringify({ author: auth, points: puntos, name: bp }),
+        contentType: "application/json",
+      }).then(
+        (func = () => {
+          alert("Blueprint updated");
+          setList(auth); // blueprint's list updated
+        })
+      );
     }
   }
 
-   // Function for create a new blueprint
-  function create(){
-    var canvas = document.getElementById("myCanvas"), ctx = canvas.getContext("2d");
+  // Function for create a new blueprint
+  function create() {
+    var canvas = document.getElementById("myCanvas"),
+      ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     bp = prompt("Please enter the blueprint name");
     if (bp != null) {
-        firstTime = true;
+      firstTime = true;
     }
   }
 
   // Function for delete a  blueprint
-   function deleteBlueprint(){
-        return $.ajax({
-            url: "/blueprints/" + auth + "/" + bp,
-            type: "DELETE",
-            // data: JSON.stringify({ author: auth, points: puntos, name: bp }),
-            contentType: "application/json",
-            }).then(function() {
+  function deleteBlueprint() {
+    return $.ajax({
+      url: "/blueprints/" + auth + "/" + bp,
+      type: "DELETE",
+      // data: JSON.stringify({ author: auth, points: puntos, name: bp }),
+      contentType: "application/json",
+    })
+      .then(function () {
+        alert("Blueprint delete");
+        return setList(author);
+      })
+      .catch(deleteData());
+  }
 
-                alert("Blueprint delete");
-                return setList(author);
-        });
-   }
+  function deleteData() {
+    $("#blueprints").find("td").remove();
+    $("#blueprint_name").text("");
+    $("#totalPoints").text("");
+    var canvas = document.getElementById("myCanvas");
+    var ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.beginPath();
+  }
 
-   function deleteOfCanvas(){
-        var canvas = document.getElementById("myCanvas"), ctx = canvas.getContext("2d");
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.beginPath();
-        deleteBlueprint();
-   }
+  function deleteOfCanvas() {
+    var canvas = document.getElementById("myCanvas"),
+      ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.beginPath();
+    deleteBlueprint();
+  }
 
   // Public method that allows updating a private variable
   return {
@@ -183,7 +208,7 @@ var Module = (function () {
     clicks: clicks,
     update: update,
     create: create,
-    deleteOfCanvas:deleteOfCanvas,
-    deleteBlueprint: deleteBlueprint
+    deleteOfCanvas: deleteOfCanvas,
+    deleteBlueprint: deleteBlueprint,
   };
 })();
