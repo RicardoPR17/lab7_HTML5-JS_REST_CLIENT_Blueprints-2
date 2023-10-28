@@ -172,8 +172,6 @@ var Module = (function () {
     return $.ajax({
       url: "/blueprints/" + auth + "/" + bp,
       type: "DELETE",
-      // data: JSON.stringify({ author: auth, points: puntos, name: bp }),
-      contentType: "application/json",
     })
       .then(function () {
         alert("Blueprint delete");
