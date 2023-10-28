@@ -3,6 +3,7 @@ var Module = (function () {
   var auth;
   var bp;
   var puntos = [];
+  let firstTime = false;
 
   const apiOpt = true;
 
@@ -122,16 +123,38 @@ var Module = (function () {
 
   // Functions for update a blueprint
   function update() {
-    return $.ajax({
-      url: "/blueprints/" + auth + "/" + bp,
-      type: "PUT",
-      data: JSON.stringify({ author: auth, points: puntos, name: bp }),
-      contentType: "application/json",
-    })
-    .then(func = () => {
-      alert("Blueprint updated");
-      setList(auth);  // blueprint's list updated
-    });
+    if (firstTime) {
+        firstTime = false;
+        return $.ajax({
+              url: "/blueprints",
+              type: "POST",
+              data: JSON.stringify({ author: document.getElementById("author").value, points: [], name: bp }),
+              contentType: "application/json",
+        }).then(function() {
+            alert("Blueprint created and updated");
+            return setList(author);
+        });
+    } else {
+        return $.ajax({
+            url: "/blueprints/" + auth + "/" + bp,
+            type: "PUT",
+            data: JSON.stringify({ author: auth, points: puntos, name: bp }),
+            contentType: "application/json",
+        }).then(func = () => {
+            alert("Blueprint updated");
+            setList(auth);  // blueprint's list updated
+        });
+    }
+  }
+
+   // Function for create a new blueprint
+  function create(){
+    var canvas = document.getElementById("myCanvas"), ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    bp = prompt("Please enter the blueprint name");
+    if (bp != null) {
+        firstTime = true;
+    }
   }
 
   // Public method that allows updating a private variable
@@ -141,5 +164,6 @@ var Module = (function () {
     getBlueprint: getBlueprint,
     clicks: clicks,
     update: update,
+    create: create
   };
 })();
